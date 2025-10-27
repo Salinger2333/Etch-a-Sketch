@@ -9,45 +9,70 @@
 </head>
 
 <body>
-    <div id="container">
-
+    <div id="options">
+        <div id="title">输入数字生成</div>
+        <input type="text">
+        <button>submit</button>
     </div>
+    <div id="container"></div>
 </body>
 <script defer>
     const container = document.querySelector('#container')
+    const input = document.querySelector('input')
+    const btn = document.querySelector('button')
 
-    for (let i = 1; i <= 16; i++) {
-        const row = document.createElement('div')
-        row.classList.add(`row`)
-
-        container.appendChild(row)
-        for (let j = 1; j <= 16; j++) {
-            const column = document.createElement('div')
-            column.classList.add(`column`)
-            row.appendChild(column)
+    function generateDraw(size) {
+        if (size <= 0 || size > 100) {
+            return alert('请输入0-100之间的数字')
         }
+        let inputValue = Number(size)
+        container.replaceChildren()
+        for (let i = 1; i <= inputValue; i++) {
+            const row = document.createElement('div')
+            row.classList.add(`row`)
+
+            container.appendChild(row)
+            for (let j = 1; j <= inputValue; j++) {
+                const column = document.createElement('div')
+                column.classList.add(`column`)
+                row.appendChild(column)
+            }
+        }
+        const column = document.querySelectorAll('.column')
+
+        container.addEventListener('mouseover', (e) => {
+            if (e.target.classList.contains('column')) {
+                e.target.classList.add('coloring')
+            }
+        })
     }
-    const column = document.querySelectorAll('.column')
-    console.log(column);
-    container.addEventListener('mouseover', (e) => {
-        if (e.target.classList.contains('column')) {
-            e.target.classList.add('coloring')
-        }
-    })
-
+    btn.addEventListener('click', () => generateDraw(input.value))
+    generateDraw(16)
 </script>
 <style>
     body {
         background-color: blanchedalmond;
+        display: flex;
+
+        align-items: center;
+        /* 垂直居中 */
+        justify-content: center;
+        /* 水平居中 */
+        min-height: 100vh;
+        /* 让 body 至少和视窗一样高 */
+        margin: 0;
+        /* 移除浏览器默认的 margin */
     }
 
     #container {
         border: 4px brown solid;
-        width: 98vw;
-        height: 98vh;
+        width: 65vmin;
+        height: 65vmin;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        margin-left: 5rem;
+
     }
 
     .row {
@@ -58,9 +83,7 @@
     }
 
     .column {
-
         flex: 1;
-
     }
 
     .coloring {
